@@ -46,24 +46,29 @@ export default () => {
       setBackground("#ff3a30");
    }
 
+   const switchPage = (page: "Timer" | "Scramble") => {
+      if (page === "Scramble") {
+         setScramble(Scramble("ThreeCube"));
+         setTimerOpacity(false);
+         setTimeout(() => {
+            setTimerDisplay(false);
+            setScrambleDisplay(true);
+         }, 500)
+         setTimeout(() => setScrambleOpacity(true), 10);
+         return;
+      }
+      setScrambleOpacity(false);
+      setTimeout(() => {
+         setScrambleDisplay(false);
+         setTimerDisplay(true);
+      }, 500)
+      setTimeout(() => setTimerOpacity(true), 10);
+      return;
+   }
+
    const getKey = (e: any) => {
       if (e.key === ("s" || "S")) {
-         if (timerDisplay) {
-            setScramble(Scramble("ThreeCube"));
-            setTimerOpacity(false);
-            setTimeout(() => {
-               setTimerDisplay(false);
-               setScrambleDisplay(true);
-            }, 500)
-            setTimeout(() => setScrambleOpacity(true), 10);
-            return;
-         }
-         setScrambleOpacity(false);
-         setTimeout(() => {
-            setScrambleDisplay(false);
-            setTimerDisplay(true);
-         }, 500)
-         setTimeout(() => setTimerOpacity(true), 10);
+         switchPage(timerDisplay ? "Scramble" : "Timer");
          return;
       }
       if (e.key === "Escape") {
@@ -71,6 +76,7 @@ export default () => {
          return;
       }
       if (e.key === " ") {
+         switchPage("Timer");
          toggleTimer();
          return;
       }
